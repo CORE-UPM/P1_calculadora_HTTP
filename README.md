@@ -5,7 +5,7 @@
 
 # Práctica 1 - Calculadora HTTP
 
-Versión: 29 de Enero de 20245
+Versión: 29 de Enero de 2025
 
 ## Objetivos
 
