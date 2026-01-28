@@ -5,13 +5,19 @@
 
 # Práctica 1 - Calculadora HTTP
 
-Versión: 29 de Enero de 2025
+Versión: 28 de Enero de 2026
 
 ## Objetivos
 
 * Comprender el funcionamiento de las peticiones y las respuestas en HTTP
 * Elaborar peticiones HTTP de manera manual
 * Utilizar herramientas conocidas (p.e., netcat) para depurar peticiones HTTP.
+
+## Dependencias
+
+Para realizar la práctica el alumno deberá tener instalado en su ordenador:
+- Herramienta GIT para gestión de repositorios [Github](https://git-scm.com/downloads)
+- Entorno de ejecución de javascript [NodeJS](https://nodejs.org/es/download/) versión 22.
 
 ## Descripción de la práctica
 
