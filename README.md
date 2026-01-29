@@ -5,7 +5,7 @@
 
 # Práctica 1 - Calculadora HTTP
 
-Versión: 28 de Enero de 2026
+Versión: 29 de Enero de 2026
 
 ## Objetivos
 
@@ -17,7 +17,7 @@ Versión: 28 de Enero de 2026
 
 Para realizar la práctica el alumno deberá tener instalado en su ordenador:
 - Herramienta GIT para gestión de repositorios [Github](https://git-scm.com/downloads)
-- Entorno de ejecución de javascript [NodeJS](https://nodejs.org/es/download/) versión 22.
+- Entorno de ejecución de javascript [NodeJS](https://nodejs.org/es/download/) versión 24.
 
 ## Descripción de la práctica
 
