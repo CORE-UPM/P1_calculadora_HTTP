@@ -5,7 +5,7 @@
 
 # Práctica 1 - Calculadora HTTP
 
-Versión: 29 de Enero de 2026
+Versión: 10 de febrero de 2026
 
 ## Objetivos
 
@@ -111,13 +111,13 @@ Este comando escribirá en pantalla la respuesta HTTP recibida, y en su body deb
     Abrir un PowerShell con permisos de administrador e instalar netcat con el siguiente comando:
 
     ```shell
-    choco install netcat
+    choco install nmap -y
     ```
 
     Lanzar el siguiente comando en el PowerShell:
 
     ```shell
-    Get-Content peticion.txt | nc malamen.dit.upm.es 80
+    Get-Content peticion.txt | ncat malamen.dit.upm.es 80
     ```
 
 
