@@ -3,7 +3,7 @@
 // IMPORTS
 const path = require("path");
 const expect = require('chai').expect
-const {feedback,path_assignment,err, warn_errors, scored, log, checkFileExists} = require("../utils/testutils");
+const {feedback, path_assignment, err, warn_errors, scored, log, checkFileExists} = require("../utils/testutils");
 const spawn = require("child_process").spawn;
 const fs = require("fs");
 const net = require('net');
@@ -13,7 +13,7 @@ const CALC = "malamen.dit.upm.es";
 const PORT = 80;
 const TIMEOUT = 8000;
 
-async function callServer(formattedJson, server=CALC, port=PORT) {
+async function callServer(formattedJson, server = CALC, port = PORT) {
     return new Promise((resolve, reject) => {
         let client = new net.Socket();
         var timedout = false;
@@ -42,19 +42,19 @@ async function callServer(formattedJson, server=CALC, port=PORT) {
         client.on('close', () => {
         });
         client.on('error', reject);
-        setTimeout(function(arg){
+        setTimeout(function (arg) {
             if (resolved) {
                 return;
             }
             timedout = true;
             client.destroy();
-            reject(new Error("el servidor no ha respondido en ${TIMEOUT} milisegundos"));
+            reject(new Error(`el servidor no ha respondido en ${TIMEOUT} milisegundos`));
         }, TIMEOUT, 'funky');
     });
 }
 
 
-describe("Tests Práctica 1", function() {
+describe("Tests Práctica 1", function () {
     after(function () {
         warn_errors();
     });
@@ -63,47 +63,57 @@ describe("Tests Práctica 1", function() {
     // Es un sanity check antes de los tests de verdad.
     describe("Prechecks", function () {
         scored("Comprobando que existe el directorio de la entrega...",
-           -1, async function () {
-               this.msg_ok = `Encontrado el directorio '${path_assignment}'`;
-               this.msg_err = `No se encontró el directorio '${path_assignment}'`;
-               const fileexists = await checkFileExists(path_assignment);
+            -1, async function () {
+                this.msg_ok = `Encontrado el directorio '${path_assignment}'`;
+                this.msg_err = `No se encontró el directorio '${path_assignment}'`;
+                const fileexists = await checkFileExists(path_assignment);
 
-               fileexists.should.be.equal(true);
-           });
+                fileexists.should.be.equal(true);
+            });
     });
 
-    describe("Funcionales", function(){
-        scored("suma válida", 4, async function(){ 
-               let file = 'suma.txt';
-               this.msg_err = `No se puede leer el fichero ${file}`;
-               const data = fs.readFileSync(file, 'utf8');
-               let [resp, code, js] = await callServer(data);
-               this.msg_err = "La respuesta no da un código 200";
-               code.should.be.equal(200);
-               this.msg_err = "El valor no es el deseado";
-               js["valor"].should.be.equal(7);
-           });
-        scored("error 400", 4, async function(){ 
-               let file = 'error400.txt'
-               this.msg_err = `No se puede leer el fichero ${file}`;
-               const data = fs.readFileSync(file, 'utf8');
-               var [resp, code, js] = await callServer(data);
-               this.msg_err = "La respuesta no da un código 400";
-               code.should.be.equal(400);
-           });
-
-        scored("query incompleta", 2, async function(){ 
-               let file = 'incompleta.txt';
-               this.msg_err = `No se puede leer el fichero ${file}`;
-               const data = fs.readFileSync(file, 'utf8');
-               expect(data.length).to.be.above(1);
-               try {
+    describe("Funcionales", function () {
+        scored("suma válida", 4, async function () {
+            let file = 'suma.txt';
+            this.msg_err = `No se puede leer el fichero ${file}`;
+            const data = fs.readFileSync(file, 'utf8');
+            try {
+                let [resp, code, js] = await callServer(data);
+                this.msg_err = "La respuesta no da un código 200";
+                code.should.be.equal(200);
+                this.msg_err = "El valor no es el deseado";
+                js["valor"].should.be.equal(7);
+            } catch (ex) {
+                this.msg_err = `Hay un problema con su petición HTTP: ${ex.message ?? ex}`;
+                throw err;
+            }
+        });
+        scored("error 400", 4, async function () {
+            let file = 'error400.txt'
+            this.msg_err = `No se puede leer el fichero ${file}`;
+            const data = fs.readFileSync(file, 'utf8');
+            try {
                 var [resp, code, js] = await callServer(data);
-               } catch(ex) {
-                   return null;
-               }
-               this.msg_err = `La query funcionó, y no debería hacerlo`;
-               throw new Error(this.msg_err);
-           });
+                this.msg_err = "La respuesta no da un código 400";
+                code.should.be.equal(400);
+            } catch (ex) {
+                this.msg_err = `Hay un problema con su petición HTTP: ${ex.message ?? ex}`;
+                throw err;
+            }
+        });
+
+        scored("query incompleta", 2, async function () {
+            let file = 'incompleta.txt';
+            this.msg_err = `No se puede leer el fichero ${file}`;
+            const data = fs.readFileSync(file, 'utf8');
+            expect(data.length).to.be.above(1);
+            try {
+                var [resp, code, js] = await callServer(data);
+            } catch (ex) {
+                return null;
+            }
+            this.msg_err = `La query funcionó, y no debería hacerlo`;
+            throw new Error(this.msg_err);
+        });
     });
 });
